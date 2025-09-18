@@ -18,12 +18,43 @@ export const getAllBooks = (req: Request, res: Response): void => {
 
 export const addBook = (req: Request, res: Response): void => {
     try {
-        const newBook = req.body;
-        const createdBook = bookService.addBook(newBook);
+        
+        const {title, author, genre} = req.body;
+
+        if (!title) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Book title is required."
+            });
+        }
+
+        if (!author) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Author is required."
+            });
+        }
+
+        if (!genre) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Genre is required."
+            });
+        }
+
+        const bookData: {
+            title: string;
+            author: string;
+            genre: string;
+        } = {
+            title: title,
+            author: author,
+            genre: genre
+        };
+
+        const createdBook = bookService.addBook(bookData);
         res.status(HTTP_STATUS.CREATED).json({
             message: "Book added",
             data: createdBook,
         });
+
     } catch (error) {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
             message: "Error adding book",
