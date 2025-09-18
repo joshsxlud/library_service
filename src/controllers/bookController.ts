@@ -18,8 +18,19 @@ export const getAllBooks = (req: Request, res: Response): void => {
 
 export const addBook = (req: Request, res: Response): void => {
     try {
-        
-        const {title, author, genre} = req.body;
+        let {
+            title,
+            author,
+            genre
+        }: {
+            title: string;
+            author: string;
+            genre: string;
+        } = req.body
+
+        title = title.trim();
+        author = author.trim();
+        genre = genre.trim();
 
         if (!title) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
