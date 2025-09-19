@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HTTP_STATUS } from "../constants/httpConstants";
 import * as bookService from "../services/bookService";
+import { Book } from "src/models/bookModels";
 
 export const getAllBooks = (req: Request, res: Response): void => {
     try {
@@ -18,12 +19,53 @@ export const getAllBooks = (req: Request, res: Response): void => {
 
 export const addBook = (req: Request, res: Response): void => {
     try {
-        const newBook = req.body;
-        const createdBook = bookService.addBook(newBook);
+        let {
+            title,
+            author,
+            genre
+        }: {
+            title: string;
+            author: string;
+            genre: string;
+        } = req.body;
+
+        if (title === "" || title === null) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Book title is required."
+            });
+        }
+
+        if (author === "" || author === null) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Author is required."
+            });
+        }
+        
+        if (genre === "" || genre === null) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Genre is required."
+            });
+        }
+        const bookData: {
+            title: string;
+            author: string;
+            genre: string;
+        } = {
+            title: title,
+            author: author,
+            genre: genre
+        };
+        
+        title.trim()
+        author.trim()
+        genre.trim()
+
+        const createdBook: Book = bookService.addBook(bookData);
         res.status(HTTP_STATUS.CREATED).json({
             message: "Book added",
             data: createdBook,
         });
+
     } catch (error) {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
             message: "Error adding book",
