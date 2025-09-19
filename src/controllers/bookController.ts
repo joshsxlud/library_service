@@ -35,7 +35,7 @@ export const addBook = (req: Request, res: Response): void => {
             });
         }
 
-        if (author === "" || genre === null) {
+        if (author === "" || author === null) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
                 message: "Author is required."
             });
