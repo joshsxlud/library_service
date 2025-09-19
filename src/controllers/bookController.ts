@@ -29,13 +29,13 @@ export const addBook = (req: Request, res: Response): void => {
             genre: string;
         } = req.body;
 
-        if (title === "" || null) {
+        if (title === "" || title === null) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
                 message: "Book title is required."
             });
         }
 
-        if (author === "" || null) {
+        if (author === "" || genre === null) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
                 message: "Author is required."
             });
