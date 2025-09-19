@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HTTP_STATUS } from "../constants/httpConstants";
 import * as bookService from "../services/bookService";
+import { Book } from "src/models/bookModels";
 
 export const getAllBooks = (req: Request, res: Response): void => {
     try {
@@ -26,11 +27,7 @@ export const addBook = (req: Request, res: Response): void => {
             title: string;
             author: string;
             genre: string;
-        } = req.body
-
-        title = title.trim();
-        author = author.trim();
-        genre = genre.trim();
+        } = req.body;
 
         if (!title) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
@@ -43,7 +40,7 @@ export const addBook = (req: Request, res: Response): void => {
                 message: "Author is required."
             });
         }
-
+        
         if (!genre) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
                 message: "Genre is required."
@@ -59,8 +56,12 @@ export const addBook = (req: Request, res: Response): void => {
             author: author,
             genre: genre
         };
+        
+        title.trim()
+        author.trim()
+        genre.trim()
 
-        const createdBook = bookService.addBook(bookData);
+        const createdBook: Book = bookService.addBook(bookData);
         res.status(HTTP_STATUS.CREATED).json({
             message: "Book added",
             data: createdBook,
